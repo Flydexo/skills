@@ -17,8 +17,16 @@ newly installed skill.
 
 The skill source directories must include the complete skill contents,
 including references. Do not copy only the main `SKILL.md` when a skill links
-to supporting files. Keep credentials out of this repository and out of skill
-files; configure them through the relevant local secret store or environment.
+to supporting files. During setup, ask the user for their Hetzner and
+Cloudflare API keys if they have not already configured them. Add each key to
+the selected coding agent's global secret store (Codex, Claude Code, or the
+equivalent for the chosen agent), using the key names and access method
+required by its CLI or MCP configuration. Do not ask the user to paste keys
+into ordinary chat, and do not put credentials in this repository, skill
+files, MCP configuration committed to source control, shell arguments, or
+logs. If the agent provides a secure secret-entry flow, use it; otherwise
+explain how the user can enter the value directly in the agent's global secret
+store without disclosing it to the conversation.
 
 Configure a Cloudflare MCP server in the coding agent's MCP/server settings
 using the official or otherwise trusted Cloudflare MCP package and its current
@@ -35,9 +43,13 @@ Never commit MCP credentials or tokens.
   reuse a URL from another context. Then follow the `dokploy-deploy` skill and
   its referenced guidance.
 - When a task involves Hetzner Cloud, follow the `hetzner-deploy` skill. Use
-  the user's configured `hcloud` context or `HCLOUD_TOKEN`; never request or
-  expose a token in chat, repository files, shell arguments, or logs.
+  the user's configured `hcloud` context or `HCLOUD_TOKEN`; never expose a
+  token in chat, repository files, shell arguments, or logs. If no credential
+  is configured, collect it through a secure flow and store it in the agent's
+  global secrets.
 - For Cloudflare tasks, use the configured Cloudflare MCP after checking its
   available tools and schemas. Do not assume it can perform every Cloudflare
   operation. Ask for missing account or zone selection if multiple targets
-  match, and verify the result through available read operations.
+  match, and verify the result through available read operations. If the MCP
+  needs an API key and one is not configured, collect it securely and store it
+  in the agent's global secrets.
