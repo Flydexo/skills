@@ -82,6 +82,36 @@ Never commit Stripe credentials or tokens. Refresh the first-party setup
 instructions before installation because agent support and commands can
 change.
 
+### Tavily skills and MCP
+
+Install the Tavily agent skills from the Tavily-maintained repository with
+the [Skills CLI](https://github.com/vercel-labs/skills):
+
+```sh
+npx skills add tavily-ai/skills
+```
+
+Install the full skill folders, including any referenced files. Choose the
+skills that match the work: `tavily-search` for web research and page
+extraction, `tavily-research` for in-depth research, `tavily-monitor` for
+recurring monitoring, `tavily-list` or `tavily-entity` for finding or
+enriching records, and `tavily-sdk` for building Tavily integrations. Reload
+the agent if it does not discover the installed skills.
+
+For Codex, Tavily documents this hosted MCP setup and OAuth login:
+
+```sh
+codex mcp add tavily --url https://mcp.tavily.com/mcp/
+codex mcp login tavily
+```
+
+The MCP endpoint is `https://mcp.tavily.com/mcp`. Follow Tavily's
+[MCP setup guide](https://github.com/tavily-ai/tavily-mcp) for other clients.
+Use OAuth where supported; otherwise provide the API key through the client's
+protected secret or header mechanism. Never place API keys in this repository,
+committed configuration, shell arguments, or logs. Restart the client after
+adding the server if it does not appear.
+
 ### Runtime details for agents
 
 - When a task involves Dokploy, first ask the user for the URL of their
@@ -108,3 +138,8 @@ change.
   configured Stripe MCP after checking its available tools and schemas. Use
   Stripe's documented authentication flow and request only the access needed
   for the task. Never expose or commit credentials.
+- For Tavily web research tasks, use the installed Tavily skill that matches
+  the task and prefer an already configured Tavily MCP or CLI. Use the CLI
+  only when needed by the task or requested. If authentication is required,
+  use Tavily's guided sign-in or a protected secret channel; never expose or
+  commit API keys.
